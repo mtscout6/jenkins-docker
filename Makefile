@@ -9,6 +9,9 @@ data:
 slave:
 	@cd jenkins-slave && docker build -t $(USER)/jenkins-slave .
 
+server:
+	@cd jenkins-server && docker build -t $(USER)/jenkins-server .
+
 startdata:
 	docker run -d --name jenkins-data $(USER)/jenkins-data echo Data-only container for Jenkins
 
