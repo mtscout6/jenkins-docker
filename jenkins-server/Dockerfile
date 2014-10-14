@@ -10,13 +10,19 @@ RUN apt-get update -y \
 
 # TODO: Remove --insecure flag from curl since that's 'insecure'
 RUN mkdir -p /tmp/WEB-INF/plugins \
-  && curl -L https://updates.jenkins-ci.org/latest/scm-api.hpi -o /tmp/WEB-INF/plugins/scm-api.hpi --insecure \
-  && curl -L https://updates.jenkins-ci.org/latest/git.hpi -o /tmp/WEB-INF/plugins/git.hpi --insecure \
-  && curl -L https://updates.jenkins-ci.org/latest/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi --insecure \
-  && curl -L https://updates.jenkins-ci.org/latest/multi-branch-project-plugin.hpi -o /tmp/WEB-INF/plugins/multi-branch-project-plugin.hpi --insecure \
-  && curl -L https://updates.jenkins-ci.org/latest/durable-task.hpi -o /tmp/WEB-INF/plugins/durable-task.hpi --insecure \
-  && curl -L https://updates.jenkins-ci.org/latest/docker-plugin.hpi -o /tmp/WEB-INF/plugins/docker-plugin.hpi --insecure
-# TODO: Updated ssh slaves and ssh credentials plugins
+  && curl -L https://updates.jenkins-ci.org/download/plugins/scm-api/0.2/scm-api.hpi -o /tmp/WEB-INF/plugins/scm-api.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/git/2.2.7/git.hpi -o /tmp/WEB-INF/plugins/git.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/git-client/1.10.2/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/multi-branch-project-plugin/0.1.2/multi-branch-project-plugin.hpi -o /tmp/WEB-INF/plugins/multi-branch-project-plugin.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/durable-task/0.7/durable-task.hpi -o /tmp/WEB-INF/plugins/durable-task.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/docker-plugin/0.8/docker-plugin.hpi -o /tmp/WEB-INF/plugins/docker-plugin.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/ssh-credentials/1.9/ssh-credentials.hpi -o /tmp/WEB-INF/plugins/ssh-credentials.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/ssh-slaves/1.9/ssh-slaves.hpi -o /tmp/WEB-INF/plugins/ssh-slaves.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/rebuild/1.22/rebuild.hpi -o /tmp/WEB-INF/plugins/rebuild.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/copyartifact/1.32/copyartifact.hpi -o /tmp/WEB-INF/plugins/copyartifact.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/conditional-buildstep/1.3.3/conditional-buildstep.hpi -o /tmp/WEB-INF/plugins/conditional-buildstep.hpi --insecure
+
+# Install Role strategy plugin ? Determine after getting LDAP setup.
 
 WORKDIR /tmp
 
@@ -26,6 +32,11 @@ RUN  zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/scm-api.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/multi-branch-project-plugin.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/durable-task.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/docker-plugin.hpi \
+  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/ssh-credentials.hpi \
+  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/ssh-slaves.hpi \
+  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/rebuild.hpi \
+  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/copyartifact.hpi \
+  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/conditional-buildstep.hpi \
   && rm -rf /tmp/WEB-INF
 
 WORKDIR /
