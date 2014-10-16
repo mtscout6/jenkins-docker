@@ -8,7 +8,7 @@ RUN apt-get update -y \
     ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
-# TODO: Remove --insecure flag from curl since that's 'insecure'
+# TODO: Remove --insecure flag from curl since that's 'insecure' darn corporate firewall....
 RUN mkdir -p /tmp/WEB-INF/plugins \
   && curl -L https://updates.jenkins-ci.org/download/plugins/scm-api/0.2/scm-api.hpi -o /tmp/WEB-INF/plugins/scm-api.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/git/2.2.7/git.hpi -o /tmp/WEB-INF/plugins/git.hpi --insecure \
@@ -20,6 +20,8 @@ RUN mkdir -p /tmp/WEB-INF/plugins \
   && curl -L https://updates.jenkins-ci.org/download/plugins/ssh-slaves/1.9/ssh-slaves.hpi -o /tmp/WEB-INF/plugins/ssh-slaves.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/rebuild/1.22/rebuild.hpi -o /tmp/WEB-INF/plugins/rebuild.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/copyartifact/1.32/copyartifact.hpi -o /tmp/WEB-INF/plugins/copyartifact.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/token-macro/1.10/token-macro.hpi -o /tmp/WEB-INF/plugins/token-macro.hpi --insecure \
+  && curl -L https://updates.jenkins-ci.org/download/plugins/run-condition/1.0/run-condition.hpi -o /tmp/WEB-INF/plugins/run-condition.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/conditional-buildstep/1.3.3/conditional-buildstep.hpi -o /tmp/WEB-INF/plugins/conditional-buildstep.hpi --insecure
 
 # Install Role strategy plugin ? Determine after getting LDAP setup.
@@ -32,10 +34,13 @@ RUN  zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/scm-api.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/multi-branch-project-plugin.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/durable-task.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/docker-plugin.hpi \
-  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/ssh-credentials.hpi \
-  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/ssh-slaves.hpi \
+# TODO: Resolve with result from https://issues.jenkins-ci.org/browse/JENKINS-25153
+#  && jar -uf /usr/share/jenkins/jenkins.war WEB-INF/plugin/ssh-credentials.hpi \
+#  && jar -uf /usr/share/jenkins/jenkins.war WEB-INF/plugins/ssh-slaves.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/rebuild.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/copyartifact.hpi \
+  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/token-macro.hpi \
+  && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/run-condition.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/conditional-buildstep.hpi \
   && rm -rf /tmp/WEB-INF
 
