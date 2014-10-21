@@ -1,0 +1,2 @@
+JAVA_ARGS="user.timezone='America/Mountain'"
+JAVA_ARGS="-Dorg.apache.commons.jelly.tags.fmt.timeZone=America/Mountain"

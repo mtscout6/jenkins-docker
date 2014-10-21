@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 MAINTAINER Matt Smith <mtscout6@gmail.com>
 
-RUN useradd -u 102 jenkins \
+RUN useradd --create-home -G users jenkins  \
   && echo "jenkins:jenkins" | chpasswd \
   && apt-get update -y \
   && apt-get install -y --no-install-recommends \
@@ -9,10 +9,8 @@ RUN useradd -u 102 jenkins \
     openssh-server \
     openjdk-7-jdk \
   && mkdir -p /var/run/sshd \
-  && rm -rf /var/lib/apt/lists/* \
-  && mkdir -p /home/jenkins \
-  && chown 102:106 /home/jenkins
+  && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 22
 
-CMD ["/use/sbin/sshd", "-D"]
+CMD ["/usr/sbin/sshd", "-D"]
