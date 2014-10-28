@@ -6,7 +6,13 @@ USER root
 RUN apt-get update -y \
   && apt-get install -y --no-install-recommends \
     ca-certificates \
+    sudo \
   && rm -rf /var/lib/apt/lists/*
+
+COPY ./jenkins-apply-certs.sh /usr/local/bin/jenkins-apply-certs.sh
+
+RUN echo "jenkins ALL=(ALL) NOPASSWD: /usr/local/bin/jenkins-apply-certs.sh" >> /etc/sudoers.d/jenkins \
+  && chmod 0440 /etc/sudoers.d/jenkins
 
 # TODO: Remove --insecure flag from curl since that's 'insecure' darn corporate firewall....
 RUN  mkdir -p /tmp/META-INF \
@@ -45,7 +51,6 @@ RUN cd /tmp \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/multi-branch-project-plugin.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/durable-task.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/docker-plugin.hpi \
-# TODO: Resolve with result from https://issues.jenkins-ci.org/browse/JENKINS-25153
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/credentials.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/ssh-slaves.hpi \
   && zip --grow /usr/share/jenkins/jenkins.war WEB-INF/plugins/ssh-credentials.hpi \
@@ -62,3 +67,5 @@ RUN cd /tmp \
 COPY sysconfig/jenkins /etc/sysconfig/jenkins
 
 USER jenkins
+
+COPY ./jenkins.sh /usr/local/bin/jenkins.sh

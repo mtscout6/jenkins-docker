@@ -25,10 +25,13 @@ startnpmcache:
 	docker run -d --name jenkins-npm-cache --volumes-from docker-sock $(USER)/jenkins-npm-cache echo Data-only container for Jenkins
 
 startserver:
-	docker run -d -p 50000:50000 -p 3010:8080 --name jenkins-server --volumes-from jenkins-data $(USER)/jenkins-server
+	docker run -d -p 50000:50000 -p 3010:8080 --name jenkins-server --volumes-from jenkins-data --volumes-from docker-certs $(USER)/jenkins-server
 
 # Assumes boot2docker
 startsock:
 	docker run -v /var/run/docker.sock:/var/run/docker.sock -v /usr/local/bin/docker:/usr/local/bin/docker --name docker-sock busybox
+
+startcert:
+	docker run --name docker-certs -v /home/docker/.docker:/var/jenkins_home/.docker busybox
 
 .PHONY: all data startdata statserver slave slave-nodejs
