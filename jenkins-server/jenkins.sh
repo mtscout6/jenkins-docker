@@ -1,7 +1,7 @@
 #! /bin/bash
 
 echo "Including docker certs"
-sudo /usr/local/bin/jenkins-apply-certs.sh
+#sudo /usr/local/bin/jenkins-apply-certs.sh
 
 # if `docker run` first argument start with `--` the user is passing jenkins launcher arguments
 if [[ $# -lt 1 ]] || [[ "$1" == "--"* ]]; then

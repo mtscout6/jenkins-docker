@@ -9,7 +9,7 @@ RUN apt-get update -y \
     sudo \
   && rm -rf /var/lib/apt/lists/*
 
-COPY ./jenkins-apply-certs.sh /usr/local/bin/jenkins-apply-certs.sh
+#COPY ./jenkins-apply-certs.sh /usr/local/bin/jenkins-apply-certs.sh
 
 RUN echo "jenkins ALL=(ALL) NOPASSWD: /usr/local/bin/jenkins-apply-certs.sh" >> /etc/sudoers.d/jenkins \
   && chmod 0440 /etc/sudoers.d/jenkins
@@ -22,7 +22,9 @@ RUN  mkdir -p /tmp/META-INF \
   && curl -L https://updates.jenkins-ci.org/download/plugins/git-client/1.10.2/git-client.hpi -o /tmp/WEB-INF/plugins/git-client.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/multi-branch-project-plugin/0.1.2/multi-branch-project-plugin.hpi -o /tmp/WEB-INF/plugins/multi-branch-project-plugin.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/durable-task/0.7/durable-task.hpi -o /tmp/WEB-INF/plugins/durable-task.hpi --insecure \
+# Look at https://github.com/boot2docker/boot2docker/issues/571#issuecomment-59528801 as potential work around.... (IT WORKED!!)
   && curl -L https://updates.jenkins-ci.org/download/plugins/docker-plugin/0.8/docker-plugin.hpi -o /tmp/WEB-INF/plugins/docker-plugin.hpi --insecure \
+#  && curl -L https://dl.dropboxusercontent.com/u/534928/docker-plugin.hpi -o /tmp/WEB-INF/plugins/docker-plugin.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/credentials/1.18/credentials.hpi -o /tmp/WEB-INF/plugins/credentials.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/ssh-credentials/1.9/ssh-credentials.hpi -o /tmp/WEB-INF/plugins/ssh-credentials.hpi --insecure \
   && curl -L https://updates.jenkins-ci.org/download/plugins/ssh-slaves/1.8/ssh-slaves.hpi -o /tmp/WEB-INF/plugins/ssh-slaves.hpi --insecure \
@@ -35,6 +37,8 @@ RUN  mkdir -p /tmp/META-INF \
   && unzip -p /usr/share/jenkins/jenkins.war META-INF/MANIFEST.MF \
     | sed "/^\s*$/q" \
     > /tmp/META-INF/MANIFEST.MF
+
+#COPY ./lib/docker-plugin.hpi /tmp/WEB-INF/plugins/docker-plugin.hpi
 
 # Install Role strategy plugin ? Determine after getting LDAP setup.
 
@@ -68,4 +72,4 @@ COPY sysconfig/jenkins /etc/sysconfig/jenkins
 
 USER jenkins
 
-COPY ./jenkins.sh /usr/local/bin/jenkins.sh
+#COPY ./jenkins.sh /usr/local/bin/jenkins.sh
